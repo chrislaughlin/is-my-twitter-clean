@@ -53,6 +53,6 @@ typings/
 .env
 
 # IDE
-.idea/
+.idea
 
 
