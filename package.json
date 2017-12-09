@@ -12,11 +12,13 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
+    "express": "^4.16.2",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "body-parser": "latest"
   },
   "devDependencies": {
-    "nwb": "0.20.x"
+    "nwb": "^0.20.0"
   },
   "author": "Chris Laughlin <bluntm@gmail.com>",
   "license": "None",
