@@ -1,3 +1,3 @@
-# temp-app
+# Is my Twitter clean
 
-Describe temp-app here.
+Processes all your tweets to find potentially offensive tweets.

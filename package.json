@@ -1,7 +1,7 @@
 {
-  "name": "temp-app",
+  "name": "is-my-twitter-clean",
   "version": "1.0.0",
-  "description": "Describe temp-app here",
+  "description": "Processes all your tweets to find potentially offensive tweets.",
   "private": true,
   "scripts": {
     "build": "nwb build-react-app",
@@ -18,7 +18,7 @@
   "devDependencies": {
     "nwb": "0.20.x"
   },
-  "author": "",
-  "license": "MIT",
-  "repository": ""
+  "author": "Chris Laughlin <bluntm@gmail.com>",
+  "license": "None",
+  "repository": "https://github.com/chrislaughlin/is-my-twitter-clean"
 }
