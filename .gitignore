@@ -55,4 +55,5 @@ typings/
 # IDE
 .idea
 
-
+# Config files
+src/server/twitterConfig.js
