@@ -14,6 +14,9 @@ class App extends Component {
             get(`/access-token?${buildQueryString({requestToken, requestTokenSecret, oauthVerifier})}`)
                 .then(({error, accessToken, accessTokenSecret, results}) => {
                     console.log({error, accessToken, accessTokenSecret, results});
+                    get(`/get-statuses?${buildQueryString({accessToken,accessTokenSecret, screenName: results.screen_name})}`).then(response => {
+                        console.log(response);
+                    })
             })
         }
 
