@@ -35,9 +35,9 @@ app.use(function(req, res, next) {
 
 app.get('/twitter-test', function (reg, res) {
     twitter
-        .getTweet({id: '1111111111'},
+        .getUserTimeline({screen_name: 'chrislaughlin'},
                 error => console.error(error),
-                data => res.json(data)
+                data => res.send(data)
         );
 });
 
