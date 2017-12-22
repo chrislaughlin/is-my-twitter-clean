@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+require('console-json');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -7,9 +8,12 @@ const bodyParser = require('body-parser');
 const app = express();
 
 const twitterConfig = require('./twitterConfig');
-const Twitter = require('twitter-node-client').Twitter;
-
-const twitter = new Twitter(twitterConfig);
+const twitterAPI = require('node-twitter-api');
+const twitter = new twitterAPI({
+    consumerKey: twitterConfig.consumerKey,
+    consumerSecret: twitterConfig.consumerSecret,
+    callback: twitterConfig.callBackUrl
+});
 
 app.set('port', (process.env.PORT || 3000));
 
@@ -34,11 +38,30 @@ app.use(function(req, res, next) {
 });
 
 app.get('/twitter-test', function (reg, res) {
-    twitter
-        .getUserTimeline({screen_name: 'chrislaughlin'},
-                error => console.error(error),
-                data => res.send(data)
-        );
+    twitter.getRequestToken(function(error, requestToken, requestTokenSecret, results){
+        if (error) {
+            console.log("Error getting OAuth request token : " + error);
+        } else {
+            console.json({requestToken, requestTokenSecret, results});
+            console.log(`https://twitter.com/oauth/authenticate?oauth_token=${requestToken}`);
+            res.send({requestToken, requestTokenSecret, results});
+        }
+    });
+});
+
+app.get('/access-token', function (reg, res) {
+    const requestToken = reg.query.requestToken;
+    const requestTokenSecret = reg.query.requestTokenSecret;
+    const oauth_verifier = reg.query.oauthVerifier;
+
+    twitter.getAccessToken(requestToken, requestTokenSecret, oauth_verifier, function(error, accessToken, accessTokenSecret, results) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.json({error, accessToken, accessTokenSecret, results});
+            res.send({error, accessToken, accessTokenSecret, results});
+        }
+    });
 });
 
 app.listen(app.get('port'), function() {
