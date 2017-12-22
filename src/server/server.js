@@ -94,7 +94,7 @@ const getTimeLineTweets = (screenName, accessToken, accessTokenSecret, done) => 
                     console.error(red(error));
                 } else {
                     console.log(blue(`Fetched ${tweets.length} tweets`));
-                    if (data.length !== 0 && tweets.length < 8000) {
+                    if (data.length !== 0) {
                         console.log(blue('Fetching more'));
                         console.log(blue(`Last ID ${data[data.length - 1].text}`));
                         return fetchTweets(
