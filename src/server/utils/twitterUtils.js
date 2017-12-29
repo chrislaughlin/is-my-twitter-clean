@@ -15,6 +15,46 @@ const getRequestToken = twitterInstance => {
     });
 };
 
+const getTimeLineTweets = (screenName, accessToken, accessTokenSecret, done, twitter) => {
+    let options = {
+        screen_name: screenName,
+        count: 200
+    };
+
+    const fetchTweets = (tweets, sinceLastId) => {
+        info(`Fetching tweets:  count ${tweets.length}`);
+        if (sinceLastId) {
+            options.max_id = sinceLastId
+        }
+        twitter.getTimeline(
+            "user_timeline",
+            options,
+            accessToken,
+            accessTokenSecret,
+            function(err, data) {
+                if (err) {
+                    error(err);
+                } else {
+                    info(`Fetched ${tweets.length} tweets`);
+                    if (data.length !== 0) {
+                        info('Fetching more');
+                        info(`Last ID ${data[data.length - 1].text}`);
+                        return fetchTweets(
+                            [].concat(data, tweets),
+                            data[data.length - 1].id
+                        );
+                    } else {
+                        info('Resolving all');
+                        done([].concat(data, tweets));
+                    }
+                }
+            }
+        );
+    };
+    fetchTweets([]);
+};
+
 module.exports = {
-    getRequestToken
+    getRequestToken,
+    getTimeLineTweets
 };

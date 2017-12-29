@@ -15,7 +15,7 @@ const twitter = new twitterAPI({
 });
 //Internal Imports
 const { buildTwitterRoutes } = require('./routes/twitterRoutes');
-const { error, info } = require('./utils/loggingUtils');
+const { info } = require('./utils/loggingUtils');
 
 const app = express();
 
