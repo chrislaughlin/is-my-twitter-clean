@@ -20,6 +20,8 @@ const twitter = new twitterAPI({
     callback: twitterConfig.callBackUrl
 });
 
+const { getRequestToken } = require('./utils/twitterUtils');
+
 app.set('port', (process.env.PORT || 3000));
 
 try {
@@ -43,14 +45,8 @@ app.use(function(req, res, next) {
 });
 
 app.get('/twitter-test', function (reg, res) {
-    twitter.getRequestToken(function(error, requestToken, requestTokenSecret, results){
-        if (error) {
-            console.error(red("Error getting OAuth request token : " + error));
-        } else {
-            console.json({requestToken, requestTokenSecret, results});
-            console.log(`https://twitter.com/oauth/authenticate?oauth_token=${requestToken}`);
-            res.send({requestToken, requestTokenSecret, results});
-        }
+    getRequestToken(twitter).then(data => {
+        res.send(data);
     });
 });
 
