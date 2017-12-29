@@ -1,5 +1,6 @@
 const { error, info } = require('../utils/loggingUtils');
 const { getRequestToken, getTimeLineTweets } = require('../utils/twitterUtils');
+const { removeCleanTweets } = require('../utils/processingUtils');
 
 module.exports = {
     buildTwitterRoutes: (app, twitter) => {
@@ -48,8 +49,10 @@ module.exports = {
                 accessToken,
                 accessTokenSecret,
                 tweets => {
-                    info('Returning all tweets');
-                    res.send({tweets});
+                    info(`Fetched all Tweets: ${tweets.length}`);
+                    const dirtyTweets = removeCleanTweets(tweets);
+                    info(`Removed clean tweets: ${dirtyTweets.length}`);
+                    res.send({tweets: dirtyTweets});
                 },
                 twitter
             )

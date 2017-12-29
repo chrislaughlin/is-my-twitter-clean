@@ -38,7 +38,6 @@ const getTimeLineTweets = (screenName, accessToken, accessTokenSecret, done, twi
                     info(`Fetched ${tweets.length} tweets`);
                     if (data.length !== 0) {
                         info('Fetching more');
-                        info(`Last ID ${data[data.length - 1].text}`);
                         return fetchTweets(
                             [].concat(data, tweets),
                             data[data.length - 1].id
@@ -53,6 +52,7 @@ const getTimeLineTweets = (screenName, accessToken, accessTokenSecret, done, twi
     };
     fetchTweets([]);
 };
+
 
 module.exports = {
     getRequestToken,
