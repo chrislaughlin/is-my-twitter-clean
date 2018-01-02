@@ -36,8 +36,9 @@ class App extends Component {
         }
 
     }
-    onButtonClicked = () => {
-        get('/twitter-test').then(({requestToken, requestTokenSecret}) => {
+
+    onUserAuthClicked = () => {
+        get('/request-token').then(({requestToken, requestTokenSecret}) => {
             window.localStorage.setItem('requestToken', requestToken);
             window.localStorage.setItem('requestTokenSecret', requestTokenSecret);
             window.location = `https://twitter.com/oauth/authenticate?oauth_token=${requestToken}`;
@@ -49,7 +50,7 @@ class App extends Component {
             <div>
                 Login with your twitter account:
                 <button
-                    onClick={this.onButtonClicked}
+                    onClick={this.onUserAuthClicked}
                 >
                     LOGIN
                 </button>
