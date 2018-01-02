@@ -1,5 +1,5 @@
 const { error, info } = require('../utils/loggingUtils');
-const { getRequestToken, getTimeLineTweets } = require('../utils/twitterUtils');
+const { getRequestToken, getTimeLineTweets, deleteTweet } = require('../utils/twitterUtils');
 const { removeCleanTweets } = require('../utils/processingUtils');
 
 module.exports = {
@@ -55,6 +55,26 @@ module.exports = {
                     res.send({tweets: dirtyTweets});
                 },
                 twitter
+            )
+
+        });
+
+        /*
+            delete tweet
+         */
+        app.post('/delete-tweet', function (reg, res) {
+            info(JSON.stringify(reg.body));
+            const uuid = reg.body.uuid;
+            const accessToken = reg.body.accessToken;
+            const accessTokenSecret = reg.body.accessTokenSecret;
+
+            info(`deleting tweet UUID: ${uuid}`);
+            deleteTweet(
+                uuid,
+                accessToken,
+                accessTokenSecret,
+                twitter,
+                () => res.send({})
             )
 
         });
