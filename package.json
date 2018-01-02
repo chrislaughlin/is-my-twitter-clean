@@ -13,6 +13,7 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "body-parser": "latest",
     "chalk": "^2.3.0",
     "console-json": "^1.0.1",

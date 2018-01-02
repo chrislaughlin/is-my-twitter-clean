@@ -34,17 +34,18 @@ const getTimeLineTweets = (screenName, accessToken, accessTokenSecret, done, twi
             function(err, data) {
                 if (err) {
                     error(err);
+                    done([]);
                 } else {
-                    info(`Fetched ${tweets.length} tweets`);
-                    if (data.length !== 0) {
+                    info(`Fetched ${data.length} tweets`);
+                    if (data.length === 0 || data.length < 200) {
+                        info('Resolving all');
+                        done([].concat(data, tweets));
+                    } else {
                         info('Fetching more');
                         return fetchTweets(
                             [].concat(data, tweets),
                             data[data.length - 1].id
                         );
-                    } else {
-                        info('Resolving all');
-                        done([].concat(data, tweets));
                     }
                 }
             }
@@ -53,8 +54,27 @@ const getTimeLineTweets = (screenName, accessToken, accessTokenSecret, done, twi
     fetchTweets([]);
 };
 
+const deleteTweet = (uuid, accessToken, accessTokenSecret, twitter, done) => {
+    twitter.statuses('destroy', {
+            id: uuid
+        },
+        accessToken,
+        accessTokenSecret,
+        function (err) {
+            if (err) {
+                error(JSON.stringify(err));
+                done();
+            } else {
+                info(`deleted ${uuid} tweet`);
+                done();
+            }
+        }
+    )
+};
+
 
 module.exports = {
     getRequestToken,
-    getTimeLineTweets
+    getTimeLineTweets,
+    deleteTweet
 };
