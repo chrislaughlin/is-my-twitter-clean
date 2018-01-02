@@ -5,6 +5,8 @@ import './spinner.css';
 import { get, post } from '../utils/restUtils';
 import { getQueryStringValue, buildQueryString } from '../utils/windowUtils';
 
+import LandingView from './modules/landing/landingView';
+
 class App extends Component {
 
     state = {
@@ -36,27 +38,6 @@ class App extends Component {
         }
 
     }
-
-    onUserAuthClicked = () => {
-        get('/request-token').then(({requestToken, requestTokenSecret}) => {
-            window.localStorage.setItem('requestToken', requestToken);
-            window.localStorage.setItem('requestTokenSecret', requestTokenSecret);
-            window.location = `https://twitter.com/oauth/authenticate?oauth_token=${requestToken}`;
-        })
-    };
-
-    renderLoginWithTwitter = () => {
-        return (
-            <div>
-                Login with your twitter account:
-                <button
-                    onClick={this.onUserAuthClicked}
-                >
-                    LOGIN
-                </button>
-            </div>
-        )
-    };
 
     deleteTweet = uuid => {
         const {
@@ -115,7 +96,7 @@ class App extends Component {
                 <div>
                     <h2>Is my Twitter clean</h2>
                     {
-                        !isLoggedIn && this.renderLoginWithTwitter()
+                        !isLoggedIn && <LandingView/>
                     }
                     {
                         isLoggedIn && this.renderTweetsView(tweets)
