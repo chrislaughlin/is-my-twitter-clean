@@ -5,9 +5,9 @@ const { removeCleanTweets } = require('../utils/processingUtils');
 module.exports = {
     buildTwitterRoutes: (app, twitter) => {
         /*
-            twitter-test
+            request-token
          */
-        app.get('/twitter-test', function (reg, res) {
+        app.get('/request-token', function (reg, res) {
             getRequestToken(twitter).then(data => {
                 res.send(data);
             });
@@ -63,7 +63,6 @@ module.exports = {
             delete tweet
          */
         app.post('/delete-tweet', function (reg, res) {
-            info(JSON.stringify(reg.body));
             const uuid = reg.body.uuid;
             const accessToken = reg.body.accessToken;
             const accessTokenSecret = reg.body.accessTokenSecret;
