@@ -37,8 +37,8 @@ const getTimeLineTweets = (screenName, accessToken, accessTokenSecret, done, twi
                     done([]);
                 } else {
                     info(`Fetched ${data.length} tweets`);
-                    if (data.length === 0 || data.length < 200) {
-                        info('Resolving all');
+                    if (data.length === 0) {
+                        info('Resolved all');
                         done([].concat(data, tweets));
                     } else {
                         info('Fetching more');
