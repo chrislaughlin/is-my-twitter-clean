@@ -1,26 +1,29 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
 import LoginWithTwitter from './loginWithTwitter';
-import {get} from "../../../utils/restUtils";
+import {get} from "../../utils/restUtils";
+import {
+    setRequestToken,
+    setRequestTokenSecret
+} from '../../utils/localStorageUtils';
+import { setWindowLocation } from '../../utils/windowUtils';
 
-class LandingView extends PureComponent {
 
-    onUserAuthClicked = () => {
-        get('/request-token').then(({requestToken, requestTokenSecret}) => {
-            window.localStorage.setItem('requestToken', requestToken);
-            window.localStorage.setItem('requestTokenSecret', requestTokenSecret);
-            window.location = `https://twitter.com/oauth/authenticate?oauth_token=${requestToken}`;
-        })
-    };
+const onUserAuthClicked = () => {
+    get('/request-token').then(({requestToken, requestTokenSecret}) => {
+        setRequestToken(requestToken);
+        setRequestTokenSecret(requestTokenSecret);
+        setWindowLocation(`https://twitter.com/oauth/authenticate?oauth_token=${requestToken}`);
+    });
+};
 
-    render() {
-        return (
-            <LoginWithTwitter
-                onUserAuthClicked={this.onUserAuthClicked}
-            />
-        );
-    }
 
-}
+const LandingView = () => {
+    return (
+        <LoginWithTwitter
+            onUserAuthClicked={onUserAuthClicked}
+        />
+    );
+};
 
 export default LandingView;

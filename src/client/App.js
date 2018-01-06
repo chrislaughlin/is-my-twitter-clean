@@ -1,7 +1,11 @@
 import React, {Component} from 'react'
 
-import { get, post } from '../utils/restUtils';
-import { getQueryStringValue, buildQueryString } from '../utils/windowUtils';
+import { get, post } from './utils/restUtils';
+import { getQueryStringValue, buildQueryString } from './utils/windowUtils';
+import {
+    getRequestToken,
+    getRequestTokenSecret
+} from './utils/localStorageUtils';
 
 import LandingView from './modules/landing/landingView';
 import TweetView from './modules/tweets/tweetsView';
@@ -15,8 +19,8 @@ class App extends Component {
 
     componentDidMount() {
         if (getQueryStringValue('oauth_verifier')) {
-            const requestToken = window.localStorage.getItem('requestToken');
-            const requestTokenSecret = window.localStorage.getItem('requestTokenSecret');
+            const requestToken = getRequestToken();
+            const requestTokenSecret = getRequestTokenSecret();
             const oauthVerifier = getQueryStringValue('oauth_verifier');
             get(`/access-token?${buildQueryString({requestToken, requestTokenSecret, oauthVerifier})}`)
                 .then(({accessToken, accessTokenSecret, results}) => {

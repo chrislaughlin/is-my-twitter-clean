@@ -5,3 +5,5 @@ export const getQueryStringValue = key => {
 };
 
 export const buildQueryString = queryString.stringify;
+
+export const setWindowLocation = location => window.location = location;
