@@ -1,6 +1,5 @@
 /* @flow */
 import React from 'react';
-import PropTypes from 'prop-types';
 
 export type Props = { onUserAuthClicked: Function };
 
