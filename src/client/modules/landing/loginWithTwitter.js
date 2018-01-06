@@ -1,9 +1,14 @@
+/* @flow */
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const LoginWithTwitter = ({
-    onUserAuthClicked
-}) => {
+export type Props = { onUserAuthClicked: Function };
+
+const LoginWithTwitter = (props: Props) => {
+    const {
+        onUserAuthClicked
+    } = props;
+
     return (
         <div>
             Login with your twitter account:
@@ -14,10 +19,6 @@ const LoginWithTwitter = ({
             </button>
         </div>
     );
-};
-
-LoginWithTwitter.propTypes = {
-    onUserAuthClicked: PropTypes.func.isRequired
 };
 
 export default LoginWithTwitter;

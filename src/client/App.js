@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+/* @flow */
+import React, { Component } from 'react';
 
 import { get, post } from './utils/restUtils';
 import { getQueryStringValue, buildQueryString } from './utils/windowUtils';
@@ -10,7 +11,10 @@ import {
 import LandingView from './modules/landing/landingView';
 import TweetView from './modules/tweets/tweetsView';
 
+export type Props = {};
+
 class App extends Component {
+    props: Props;
 
     state = {
         isLoggedIn: getQueryStringValue('oauth_verifier'),

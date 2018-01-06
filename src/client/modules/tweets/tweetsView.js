@@ -1,12 +1,20 @@
+/* @flow */
 import React from 'react';
 import PropTypes from 'prop-types';
 
 import './../../spinner.css';
 
-const TweetsView = ({
-    tweets,
-    deleteTweet
-}) => {
+export type Props = {
+    tweets?: Array<any>,
+    deleteTweet: Function,
+};
+
+const TweetsView = (props: Props) => {
+    const {
+        tweets,
+        deleteTweet
+    } = props;
+
     if (!tweets) {
         return <div className='spinner'/>
     }
@@ -35,11 +43,6 @@ const TweetsView = ({
             </ul>
         </div>
     )
-};
-
-TweetsView.propTypes = {
-    tweets: PropTypes.array,
-    deleteTweet: PropTypes.func.isRequired
 };
 
 export default TweetsView;
