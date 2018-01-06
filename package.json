@@ -12,7 +12,8 @@
     "test": "nwb test-react",
     "test:coverage": "nwb test-react --coverage",
     "test:watch": "nwb test-react --server",
-    "flow": "flow"
+    "flow": "flow",
+    "flow-check": "flow check"
   },
   "dependencies": {
     "axios": "^0.17.1",
@@ -25,6 +26,8 @@
     "query-string": "^5.0.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
     "sentiment": "^4.1.0",
     "styled-components": "^2.4.0",
     "twitter-node-client": "0.0.6"
@@ -33,7 +36,8 @@
     "babel-cli": "^6.26.0",
     "babel-preset-flow": "^6.23.0",
     "flow-bin": "^0.62.0",
-    "nwb": "^0.20.0"
+    "nwb": "^0.20.0",
+    "redux-devtools": "^3.4.1"
   },
   "author": "Chris Laughlin <bluntm@gmail.com>",
   "license": "None",

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 
 import { get, post } from './utils/restUtils';
 import { getQueryStringValue, buildQueryString } from './utils/windowUtils';
@@ -10,31 +11,32 @@ import {
 import LandingView from './modules/landing/landingView';
 import TweetView from './modules/tweets/tweetsView';
 
-class App extends React.Component {
+import * as sessionActions from './actions/sessionActions';
+import * as loggedInActions from './actions/loggedInActions';
+import * as tweetActions from './actions/tweetActions';
 
-    state = {
-        isLoggedIn: getQueryStringValue('oauth_verifier'),
-        tweets: null
-    };
+class App extends React.Component {
 
     componentDidMount() {
         if (getQueryStringValue('oauth_verifier')) {
+            this.props.onIsLoggedIn(true);
             const requestToken = getRequestToken();
             const requestTokenSecret = getRequestTokenSecret();
             const oauthVerifier = getQueryStringValue('oauth_verifier');
             get(`/access-token?${buildQueryString({requestToken, requestTokenSecret, oauthVerifier})}`)
                 .then(({accessToken, accessTokenSecret, results}) => {
-                    this.setState({
+                    this.props.onHasAuth({
                         accessToken,
                         accessTokenSecret
                     });
                     get(`/get-statuses?${buildQueryString({accessToken,accessTokenSecret, screenName: results.screen_name})}`).then(response => {
-                        this.setState({
+                        this.props.onHasTweets({
                             tweets: response.tweets
                         });
                     })
             })
         } else {
+            this.props.onIsLoggedIn(false);
             localStorage.clear();
         }
 
@@ -42,9 +44,11 @@ class App extends React.Component {
 
     deleteTweet = uuid => {
         const {
-            accessToken,
-            accessTokenSecret
-        } = this.state;
+            session: {
+                accessToken,
+                accessTokenSecret
+            }
+        } = this.props;
 
         post(
             '/delete-tweet',
@@ -58,20 +62,20 @@ class App extends React.Component {
 
     render() {
         const {
-            isLoggedIn,
+            loggedIn,
             tweets
-        } = this.state;
+        } = this.props;
         return (
             <div>
                 <div>
                     <h2>Is my Twitter clean</h2>
                     {
-                        !isLoggedIn &&
+                        !loggedIn &&
                             <LandingView
                             />
                     }
                     {
-                        isLoggedIn &&
+                        loggedIn &&
                             <TweetView
                                 tweets={tweets}
                                 deleteTweet={this.deleteTweet}
@@ -83,4 +87,25 @@ class App extends React.Component {
     }
 }
 
-export default App
+const mapStateToProps = ({session, loggedIn, tweets}) => {
+    return {session, loggedIn, tweets};
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onHasAuth: (requestToken, requestTokenSecret) => {
+            dispatch(sessionActions.setSession({requestToken, requestTokenSecret}));
+        },
+        onIsLoggedIn: (isLoggedIn) => {
+            dispatch(loggedInActions.setLoggedOn(isLoggedIn));
+        },
+        onHasTweets: (tweets) => {
+            dispatch(tweetActions.setTweets(tweets));
+        }
+    }
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(App);
