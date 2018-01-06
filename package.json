@@ -13,7 +13,9 @@
     "test:coverage": "nwb test-react --coverage",
     "test:watch": "nwb test-react --server",
     "flow": "flow",
-    "flow-check": "flow check"
+    "flow-check": "flow check",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate"
   },
   "dependencies": {
     "axios": "^0.17.1",
@@ -33,6 +35,7 @@
     "twitter-node-client": "0.0.6"
   },
   "devDependencies": {
+    "all-contributors-cli": "^4.10.1",
     "babel-cli": "^6.26.0",
     "babel-preset-flow": "^6.23.0",
     "flow-bin": "^0.62.0",
