@@ -8,7 +8,11 @@ module.exports = {
             request-token
          */
         app.get('/request-token', function (reg, res) {
+            info('Requesting request token');
             getRequestToken(twitter).then(data => {
+                info(`- Request token accessed -`);
+                info(`requestToken: ${data.requestToken}`);
+                info(`requestTokenSecret: ${data.requestTokenSecret}`);
                 res.send(data);
             });
         });
@@ -20,14 +24,18 @@ module.exports = {
             const requestToken = reg.query.requestToken;
             const requestTokenSecret = reg.query.requestTokenSecret;
             const oauth_verifier = reg.query.oauthVerifier;
-
+            info('Getting Access Token with the following props:');
+            info(`requestToken: ${requestToken}`);
+            info(`requestTokenSecret: ${requestTokenSecret}`);
+            info(`oauth_verifier: ${oauth_verifier}`);
             twitter.getAccessToken(
                 requestToken,
                 requestTokenSecret,
                 oauth_verifier,
                 (err, accessToken, accessTokenSecret, results) => {
                     if (err) {
-                        error(err);
+                        error(JSON.stringify(err));
+                        res.send({error});
                     } else {
                         console.json({error, accessToken, accessTokenSecret, results});
                         res.send({error, accessToken, accessTokenSecret, results});

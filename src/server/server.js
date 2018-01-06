@@ -13,6 +13,8 @@ const twitter = new twitterAPI({
     consumerSecret: twitterConfig.consumerSecret,
     callback: twitterConfig.callBackUrl
 });
+//Build Imports
+const nwbMiddleware = require('nwb/express');
 //Internal Imports
 const { buildTwitterRoutes } = require('./routes/twitterRoutes');
 const { info } = require('./utils/loggingUtils');
@@ -30,7 +32,7 @@ try {
 catch (e) {
     info('Serving development build with nwb middleware');
     info('Run `npm run build` to create a production build');
-    app.use(require('nwb/express')(express))
+    app.use(nwbMiddleware(express))
 }
 
 app.use(bodyParser.json());

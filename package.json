@@ -7,6 +7,7 @@
     "build": "nwb build-react-app",
     "clean": "nwb clean-app",
     "start": "node src/server/server",
+    "debug": "node inspect src/server/server",
     "start-ui": "nwb serve-react-app",
     "test": "nwb test-react",
     "test:coverage": "nwb test-react --coverage",
@@ -19,10 +20,12 @@
     "console-json": "^1.0.1",
     "express": "^4.16.2",
     "node-twitter-api": "^1.8.0",
+    "prop-types": "^15.6.0",
     "query-string": "^5.0.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "sentiment": "^4.1.0",
+    "styled-components": "^2.4.0",
     "twitter-node-client": "0.0.6"
   },
   "devDependencies": {

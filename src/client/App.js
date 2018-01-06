@@ -1,32 +1,35 @@
 import React, {Component} from 'react'
 
-import './spinner.css';
+import { get, post } from './utils/restUtils';
+import { getQueryStringValue, buildQueryString } from './utils/windowUtils';
+import {
+    getRequestToken,
+    getRequestTokenSecret
+} from './utils/localStorageUtils';
 
-import { get, post } from '../utils/restUtils';
-import { getQueryStringValue, buildQueryString } from '../utils/windowUtils';
+import LandingView from './modules/landing/landingView';
+import TweetView from './modules/tweets/tweetsView';
 
 class App extends Component {
 
     state = {
-        isLoggedIn: false,
+        isLoggedIn: getQueryStringValue('oauth_verifier'),
         tweets: null
     };
 
     componentDidMount() {
         if (getQueryStringValue('oauth_verifier')) {
-            const requestToken = window.localStorage.getItem('requestToken');
-            const requestTokenSecret = window.localStorage.getItem('requestTokenSecret');
+            const requestToken = getRequestToken();
+            const requestTokenSecret = getRequestTokenSecret();
             const oauthVerifier = getQueryStringValue('oauth_verifier');
             get(`/access-token?${buildQueryString({requestToken, requestTokenSecret, oauthVerifier})}`)
                 .then(({accessToken, accessTokenSecret, results}) => {
                     this.setState({
-                        isLoggedIn: true,
                         accessToken,
                         accessTokenSecret
                     });
                     get(`/get-statuses?${buildQueryString({accessToken,accessTokenSecret, screenName: results.screen_name})}`).then(response => {
                         this.setState({
-                            isLoggedIn: true,
                             tweets: response.tweets
                         });
                     })
@@ -36,27 +39,6 @@ class App extends Component {
         }
 
     }
-
-    onUserAuthClicked = () => {
-        get('/request-token').then(({requestToken, requestTokenSecret}) => {
-            window.localStorage.setItem('requestToken', requestToken);
-            window.localStorage.setItem('requestTokenSecret', requestTokenSecret);
-            window.location = `https://twitter.com/oauth/authenticate?oauth_token=${requestToken}`;
-        })
-    };
-
-    renderLoginWithTwitter = () => {
-        return (
-            <div>
-                Login with your twitter account:
-                <button
-                    onClick={this.onUserAuthClicked}
-                >
-                    LOGIN
-                </button>
-            </div>
-        )
-    };
 
     deleteTweet = uuid => {
         const {
@@ -74,37 +56,6 @@ class App extends Component {
         ).then(response => console.log(response));
     };
 
-    renderTweetsView = tweets => {
-        if (!tweets) {
-            return <div className='spinner'/>
-        }
-        return (
-            <div>
-                <p>
-                    Total Tweets: {tweets.length}
-                </p>
-                <ul>
-                    {
-                        tweets.map((tweet, index) => {
-                            return (
-                                <li
-                                    key={index}
-                                >
-                                    {tweet.tweet.text}
-                                    <button
-                                        onClick={this.deleteTweet.bind(this, tweet.tweet.id_str)}
-                                    >
-                                        DELETE
-                                    </button>
-                                </li>
-                            )
-                        })
-                    }
-                </ul>
-            </div>
-        )
-    };
-
     render() {
         const {
             isLoggedIn,
@@ -115,10 +66,16 @@ class App extends Component {
                 <div>
                     <h2>Is my Twitter clean</h2>
                     {
-                        !isLoggedIn && this.renderLoginWithTwitter()
+                        !isLoggedIn &&
+                            <LandingView
+                            />
                     }
                     {
-                        isLoggedIn && this.renderTweetsView(tweets)
+                        isLoggedIn &&
+                            <TweetView
+                                tweets={tweets}
+                                deleteTweet={this.deleteTweet}
+                            />
                     }
                 </div>
             </div>
