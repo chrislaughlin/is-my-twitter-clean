@@ -8,7 +8,16 @@ const defaultSession = {
 };
 
 const session = (state:Session = defaultSession, action: Action ) => {
-    return state;
+    switch (action.type) {
+        case 'SET_SESSION':
+            return {
+                ...state,
+                ...action.session
+            };
+        default:
+            return state;
+    }
+
 };
 
 export default session;

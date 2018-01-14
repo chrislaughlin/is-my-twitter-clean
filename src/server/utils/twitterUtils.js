@@ -37,7 +37,7 @@ const getTimeLineTweets = (screenName, accessToken, accessTokenSecret, done, twi
                     done([]);
                 } else {
                     info(`Fetched ${data.length} tweets`);
-                    if (data.length === 0) {
+                    if (data.length > 1 && data.length < 195) {
                         info('Resolved all');
                         done([].concat(data, tweets));
                     } else {
@@ -55,6 +55,7 @@ const getTimeLineTweets = (screenName, accessToken, accessTokenSecret, done, twi
 };
 
 const deleteTweet = (uuid, accessToken, accessTokenSecret, twitter, done) => {
+    info(JSON.stringify({uuid, accessToken, accessTokenSecret, twitter, done}, null, 4));
     twitter.statuses('destroy', {
             id: uuid
         },

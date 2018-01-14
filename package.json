@@ -15,7 +15,8 @@
     "flow": "flow",
     "flow-check": "flow check",
     "contributors:add": "all-contributors add",
-    "contributors:generate": "all-contributors generate"
+    "contributors:generate": "all-contributors generate",
+    "pr": "gh-create-pr"
   },
   "dependencies": {
     "axios": "^0.17.1",
@@ -39,6 +40,7 @@
     "babel-cli": "^6.26.0",
     "babel-preset-flow": "^6.23.0",
     "flow-bin": "^0.62.0",
+    "gh-create-pr": "^1.0.4",
     "nwb": "^0.20.0",
     "redux-devtools": "^3.4.1"
   },

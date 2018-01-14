@@ -2,7 +2,7 @@ import expect from 'expect'
 import React from 'react'
 import {render, unmountComponentAtNode} from 'react-dom'
 
-import App from 'src/client/App'
+import App from 'src/client/app/App'
 
 describe('App component', () => {
   let node

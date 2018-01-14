@@ -7,3 +7,10 @@ export const setTweets = (tweets: Array<Tweet>) => {
         tweets
     };
 };
+
+export const deleteTweet = (uuid: String) => {
+    return {
+        type: 'DELETE_TWEET',
+        uuid
+    }
+};
