@@ -4,6 +4,7 @@ import * as React from 'react';
 import LandingView from '../modules/landing/landingView';
 import TweetView from '../modules/tweets/tweetsView';
 import type {Tweet} from "../types/tweet";
+import StyledApp from '../styles/app/styledApp';
 
 type Props = {
     loggedIn: Boolean,
@@ -16,7 +17,7 @@ const App = (props: Props) => {
         loggedIn
     } = props;
     return (
-        <div>
+        <StyledApp>
             <div>
                 <h2>Is my Twitter clean</h2>
                 {
@@ -29,7 +30,7 @@ const App = (props: Props) => {
                     <TweetView/>
                 }
             </div>
-        </div>
+        </StyledApp>
     )
 };
 
