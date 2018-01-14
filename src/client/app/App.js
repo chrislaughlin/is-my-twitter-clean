@@ -5,6 +5,7 @@ import LandingView from '../modules/landing/landingView';
 import TweetView from '../modules/tweets/tweetsView';
 import type {Tweet} from "../types/tweet";
 import StyledApp from '../styles/app/styledApp';
+import StyledAppTitle from "../styles/app/styledAppTitle";
 
 type Props = {
     loggedIn: Boolean,
@@ -19,7 +20,9 @@ const App = (props: Props) => {
     return (
         <StyledApp>
             <div>
-                <h2>Is my Twitter clean</h2>
+                <StyledAppTitle>
+                    Is my Twitter clean
+                </StyledAppTitle>
                 {
                     !loggedIn &&
                     <LandingView
