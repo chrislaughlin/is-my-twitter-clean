@@ -13,9 +13,7 @@ type Props = {
 
 const App = (props: Props) => {
     const {
-        loggedIn,
-        tweets,
-        onDeleteTweet
+        loggedIn
     } = props;
     return (
         <div>
@@ -28,10 +26,7 @@ const App = (props: Props) => {
                 }
                 {
                     loggedIn &&
-                    <TweetView
-                        tweets={tweets}
-                        deleteTweet={onDeleteTweet}
-                    />
+                    <TweetView/>
                 }
             </div>
         </div>

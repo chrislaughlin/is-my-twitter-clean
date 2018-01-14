@@ -24,14 +24,12 @@ class AppContainer extends React.Component {
             const oauthVerifier = getQueryStringValue('oauth_verifier');
             get(`/access-token?${buildQueryString({requestToken, requestTokenSecret, oauthVerifier})}`)
                 .then(({accessToken, accessTokenSecret, results}) => {
-                    this.props.onHasAuth({
+                    this.props.onHasAuth(
                         accessToken,
                         accessTokenSecret
-                    });
+                    );
                     get(`/get-statuses?${buildQueryString({accessToken,accessTokenSecret, screenName: results.screen_name})}`).then(response => {
-                        this.props.onHasTweets({
-                            tweets: response.tweets
-                        });
+                        this.props.onHasTweets(response.tweets);
                     })
                 })
         } else {
@@ -41,33 +39,12 @@ class AppContainer extends React.Component {
 
     }
 
-    deleteTweet = uuid => {
-        const {
-            session: {
-                accessToken,
-                accessTokenSecret
-            }
-        } = this.props;
-
-        post(
-            '/delete-tweet',
-            {
-                uuid: uuid,
-                accessToken,
-                accessTokenSecret
-            }
-        ).then(response => console.log(response));
-    };
-
     render() {
         const {
-            loggedIn,
-            tweets
+            loggedIn
         } = this.props;
         return <App
                 loggedIn={loggedIn}
-                tweets={tweets}
-                onDeleteTweet={this.deleteTweet}
                 />;
     }
 }
@@ -78,14 +55,17 @@ const mapStateToProps = ({session, loggedIn, tweets}) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onHasAuth: (requestToken, requestTokenSecret) => {
-            dispatch(sessionActions.setSession({requestToken, requestTokenSecret}));
+        onHasAuth: (accessToken, accessTokenSecret) => {
+            dispatch(sessionActions.setSession({accessToken, accessTokenSecret}));
         },
         onIsLoggedIn: (isLoggedIn) => {
             dispatch(loggedInActions.setLoggedOn(isLoggedIn));
         },
         onHasTweets: (tweets) => {
             dispatch(tweetActions.setTweets(tweets));
+        },
+        onDeleteTweet: (uuid) => {
+            dispatch(tweetActions.deleteTweet(uuid));
         }
     }
 };

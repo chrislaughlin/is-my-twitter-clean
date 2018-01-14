@@ -1,20 +1,55 @@
 /* @flow */
 import React from 'react';
+import { connect } from 'react-redux';
 
 import './../../spinner.css';
+import * as tweetActions from "../../actions/tweetActions";
+import type {Tweet} from "../../types/tweet";
+import {post} from "../../utils/restUtils";
 
 export type Props = {
-    tweets?: Array<any>,
-    deleteTweet: Function,
+    tweetsState: {
+        isLoading: Boolean,
+        tweets: Array<Tweet>
+    },
+    onDeleteTweet: Function,
+};
+
+const deleteTweet = (
+    accessToken,
+    accessTokenSecret,
+    onDeleteTweet,
+    uuid
+) => {
+    return () => {
+        post(
+            '/delete-tweet',
+            {
+                uuid: uuid,
+                accessToken,
+                accessTokenSecret
+            }
+        ).then(() => {
+            onDeleteTweet(uuid);
+        });
+    }
 };
 
 const TweetsView = (props: Props) => {
     const {
-        tweets,
-        deleteTweet
+        tweetsState: {
+            tweets,
+            isLoading
+        },
+        session: {
+            accessToken,
+            accessTokenSecret
+        },
+        onDeleteTweet,
+
     } = props;
 
-    if (!tweets) {
+    if (isLoading) {
         return <div className='spinner'/>
     }
     return (
@@ -31,7 +66,12 @@ const TweetsView = (props: Props) => {
                             >
                                 {tweet.tweet.text}
                                 <button
-                                    onClick={deleteTweet.bind(this, tweet.tweet.id_str)}
+                                    onClick={deleteTweet(
+                                        accessToken,
+                                        accessTokenSecret,
+                                        onDeleteTweet,
+                                        tweet.tweet.id_str
+                                    )}
                                 >
                                     DELETE
                                 </button>
@@ -44,4 +84,19 @@ const TweetsView = (props: Props) => {
     )
 };
 
-export default TweetsView;
+const mapStateToProps = ({session, tweets}) => {
+    return {session, tweetsState: tweets};
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onDeleteTweet: (uuid) => {
+            dispatch(tweetActions.deleteTweet(uuid));
+        }
+    }
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TweetsView);
