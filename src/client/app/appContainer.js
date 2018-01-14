@@ -1,21 +1,20 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { get, post } from './utils/restUtils';
-import { getQueryStringValue, buildQueryString } from './utils/windowUtils';
+import { get, post } from './../utils/restUtils';
+import { getQueryStringValue, buildQueryString } from './../utils/windowUtils';
 import {
     getRequestToken,
     getRequestTokenSecret
-} from './utils/localStorageUtils';
+} from './../utils/localStorageUtils';
 
-import LandingView from './modules/landing/landingView';
-import TweetView from './modules/tweets/tweetsView';
+import App from './App';
 
-import * as sessionActions from './actions/sessionActions';
-import * as loggedInActions from './actions/loggedInActions';
-import * as tweetActions from './actions/tweetActions';
+import * as sessionActions from './../actions/sessionActions';
+import * as loggedInActions from './../actions/loggedInActions';
+import * as tweetActions from './../actions/tweetActions';
 
-class App extends React.Component {
+class AppContainer extends React.Component {
 
     componentDidMount() {
         if (getQueryStringValue('oauth_verifier')) {
@@ -34,7 +33,7 @@ class App extends React.Component {
                             tweets: response.tweets
                         });
                     })
-            })
+                })
         } else {
             this.props.onIsLoggedIn(false);
             localStorage.clear();
@@ -65,25 +64,11 @@ class App extends React.Component {
             loggedIn,
             tweets
         } = this.props;
-        return (
-            <div>
-                <div>
-                    <h2>Is my Twitter clean</h2>
-                    {
-                        !loggedIn &&
-                            <LandingView
-                            />
-                    }
-                    {
-                        loggedIn &&
-                            <TweetView
-                                tweets={tweets}
-                                deleteTweet={this.deleteTweet}
-                            />
-                    }
-                </div>
-            </div>
-        );
+        return <App
+                loggedIn={loggedIn}
+                tweets={tweets}
+                onDeleteTweet={this.deleteTweet}
+                />;
     }
 }
 
@@ -108,4 +93,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(App);
+)(AppContainer);
