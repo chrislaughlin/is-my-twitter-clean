@@ -6,6 +6,9 @@ import './../../spinner.css';
 import * as tweetActions from "../../actions/tweetActions";
 import type {Tweet} from "../../types/tweet";
 import {post} from "../../utils/restUtils";
+import StyledTweet from "../../styles/tweets/styledTweet";
+import StyledTweetList from "../../styles/tweets/styledTweetList";
+import DeleteTweetIcon from "../../styles/tweets/styledDeleteTweetIcon";
 
 export type Props = {
     tweetsState: {
@@ -57,29 +60,29 @@ const TweetsView = (props: Props) => {
             <p>
                 Total Tweets: {tweets.length}
             </p>
-            <ul>
+            <StyledTweetList>
                 {
                     tweets.map((tweet, index) => {
                         return (
-                            <li
+                            <StyledTweet
                                 key={index}
                             >
-                                {tweet.tweet.text}
-                                <button
+                                <span>
+                                    {tweet.tweet.text}
+                                </span>
+                                <DeleteTweetIcon
                                     onClick={deleteTweet(
                                         accessToken,
                                         accessTokenSecret,
                                         onDeleteTweet,
                                         tweet.tweet.id_str
                                     )}
-                                >
-                                    DELETE
-                                </button>
-                            </li>
+                                />
+                            </StyledTweet>
                         )
                     })
                 }
-            </ul>
+            </StyledTweetList>
         </div>
     )
 };

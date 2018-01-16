@@ -3,7 +3,7 @@ const sentiment = require('sentiment');
 const processTweetSentiment = tweet => {
     const sent = sentiment(tweet.text);
     return {
-        clean: sent.score > -10,
+        clean: sent.score > -1,
         sent,
         tweet
     }
