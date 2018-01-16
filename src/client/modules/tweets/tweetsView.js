@@ -8,7 +8,7 @@ import type {Tweet} from "../../types/tweet";
 import {post} from "../../utils/restUtils";
 import StyledTweet from "../../styles/tweets/styledTweet";
 import StyledTweetList from "../../styles/tweets/styledTweetList";
-import DeleteTweetIcon from "../../styles/tweets/styledDeleteTweetIcon";
+import TrashIcon from 'react-icons/lib/fa/trash-o';
 
 export type Props = {
     tweetsState: {
@@ -25,16 +25,16 @@ const deleteTweet = (
     uuid
 ) => {
     return () => {
-        post(
-            '/delete-tweet',
-            {
-                uuid: uuid,
-                accessToken,
-                accessTokenSecret
-            }
-        ).then(() => {
+        // post(
+        //     '/delete-tweet',
+        //     {
+        //         uuid: uuid,
+        //         accessToken,
+        //         accessTokenSecret
+        //     }
+        // ).then(() => {
             onDeleteTweet(uuid);
-        });
+        // });
     }
 };
 
@@ -70,14 +70,17 @@ const TweetsView = (props: Props) => {
                                 <span>
                                     {tweet.tweet.text}
                                 </span>
-                                <DeleteTweetIcon
-                                    onClick={deleteTweet(
-                                        accessToken,
-                                        accessTokenSecret,
-                                        onDeleteTweet,
-                                        tweet.tweet.id_str
-                                    )}
-                                />
+                                <div>
+                                    <TrashIcon
+                                        size={30}
+                                        onClick={deleteTweet(
+                                            accessToken,
+                                            accessTokenSecret,
+                                            onDeleteTweet,
+                                            tweet.tweet.id_str
+                                        )}
+                                    />
+                                </div>
                             </StyledTweet>
                         )
                     })
