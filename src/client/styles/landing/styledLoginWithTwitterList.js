@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const StyledLoginWithTwitterList = styled.ul`
     list-style: none;
-    font-size: 30px;
+    font-size: 22px;
     text-align: center;
     padding: 0px;
     margin-left: 10px;

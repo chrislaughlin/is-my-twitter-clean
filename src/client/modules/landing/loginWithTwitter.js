@@ -4,6 +4,7 @@ import StyledLoginWithTwitterContainer from "../../styles/landing/styledLoginWit
 import StyledLoginWithTwitterList from "../../styles/landing/styledLoginWithTwitterList";
 import StyledLoginWithTwitterListItem from "../../styles/landing/styledLoginWithTwitterListItem";
 import StyledLoginWithTwitterListItemEmoji from "../../styles/landing/styledLoginWithTwitterListItemEmoji";
+import StyledLoginWithTwitterButton from "../../styles/landing/styledLoginWithTwitterButton";
 
 export type Props = { onUserAuthClicked: Function };
 
@@ -33,19 +34,20 @@ const LoginWithTwitter = (props: Props) => {
                         🐤
                     </StyledLoginWithTwitterListItemEmoji>
                 </li>
+                <li>
+                    Maybe its time you checked if your twitter is clean! <br/>
+                    <StyledLoginWithTwitterListItemEmoji>
+                        ♻️
+                    </StyledLoginWithTwitterListItemEmoji>
+                </li>
+                <li>
+                    <StyledLoginWithTwitterButton
+                        onClick={onUserAuthClicked}
+                    >
+                        Login with your Twitter account
+                    </StyledLoginWithTwitterButton>
+                </li>
             </StyledLoginWithTwitterList>
-            <p>
-                Maybe its time you checked if your twitter is clean!
-                    ♻️
-                <br/>
-                In a few seconds we can process your Twitter timeline and tell you if there are any dirty tweets
-                    💩️
-            </p>
-            <button
-                onClick={onUserAuthClicked}
-            >
-                LOGIN
-            </button>
         </StyledLoginWithTwitterContainer>
     );
 };
