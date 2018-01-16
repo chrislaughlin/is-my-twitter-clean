@@ -6,6 +6,7 @@ import TweetView from '../modules/tweets/tweetsView';
 import type {Tweet} from "../types/tweet";
 import StyledApp from '../styles/app/styledApp';
 import StyledAppTitle from "../styles/app/styledAppTitle";
+import StyledAppContent from "../styles/app/styledAppContent";
 
 type Props = {
     loggedIn: Boolean,
@@ -19,10 +20,10 @@ const App = (props: Props) => {
     } = props;
     return (
         <StyledApp>
-            <div>
-                <StyledAppTitle>
+            <StyledAppTitle>
                     Is my Twitter clean
-                </StyledAppTitle>
+            </StyledAppTitle>
+            <StyledAppContent>
                 {
                     !loggedIn &&
                     <LandingView
@@ -32,7 +33,7 @@ const App = (props: Props) => {
                     loggedIn &&
                     <TweetView/>
                 }
-            </div>
+            </StyledAppContent>
         </StyledApp>
     )
 };
