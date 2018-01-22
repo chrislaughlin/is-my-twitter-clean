@@ -6,6 +6,9 @@ import './../../spinner.css';
 import * as tweetActions from "../../actions/tweetActions";
 import type {Tweet} from "../../types/tweet";
 import {post} from "../../utils/restUtils";
+import StyledTweet from "../../styles/tweets/styledTweet";
+import StyledTweetList from "../../styles/tweets/styledTweetList";
+import TrashIcon from 'react-icons/lib/fa/trash-o';
 
 export type Props = {
     tweetsState: {
@@ -22,16 +25,16 @@ const deleteTweet = (
     uuid
 ) => {
     return () => {
-        post(
-            '/delete-tweet',
-            {
-                uuid: uuid,
-                accessToken,
-                accessTokenSecret
-            }
-        ).then(() => {
+        // post(
+        //     '/delete-tweet',
+        //     {
+        //         uuid: uuid,
+        //         accessToken,
+        //         accessTokenSecret
+        //     }
+        // ).then(() => {
             onDeleteTweet(uuid);
-        });
+        // });
     }
 };
 
@@ -57,29 +60,32 @@ const TweetsView = (props: Props) => {
             <p>
                 Total Tweets: {tweets.length}
             </p>
-            <ul>
+            <StyledTweetList>
                 {
                     tweets.map((tweet, index) => {
                         return (
-                            <li
+                            <StyledTweet
                                 key={index}
                             >
-                                {tweet.tweet.text}
-                                <button
-                                    onClick={deleteTweet(
-                                        accessToken,
-                                        accessTokenSecret,
-                                        onDeleteTweet,
-                                        tweet.tweet.id_str
-                                    )}
-                                >
-                                    DELETE
-                                </button>
-                            </li>
+                                <span>
+                                    {tweet.tweet.text}
+                                </span>
+                                <div>
+                                    <TrashIcon
+                                        size={30}
+                                        onClick={deleteTweet(
+                                            accessToken,
+                                            accessTokenSecret,
+                                            onDeleteTweet,
+                                            tweet.tweet.id_str
+                                        )}
+                                    />
+                                </div>
+                            </StyledTweet>
                         )
                     })
                 }
-            </ul>
+            </StyledTweetList>
         </div>
     )
 };
